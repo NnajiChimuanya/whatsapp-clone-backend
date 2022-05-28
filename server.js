@@ -3,18 +3,80 @@ const app = express()
 import mongoose from "mongoose"
 import chatMessage from "./model/chatMessageSchema.js"
 const port = process.env.PORT || 3001
+import Pusher from "pusher"
+import cors from "cors"
 
 app.use(express.json())
+app.use(cors())
+// me
 
 try {
-    mongoose.connect("mongodb://localhost:27017/whatsappDatabase")
-    console.log("connected to localdatabase")
+    mongoose.connect("mongodb+srv://Muanya:Muanyachi@whatsappdatabase.ra74r.mongodb.net/?retryWrites=true&w=majority")
+    console.log("connected")
 } catch (error) {
     if(error) throw error
 }
 
+const db = mongoose.connection
+
+
+
+
+
+const pusher = new Pusher({
+  appId: "1412895",
+  key: "e58aa4d80ab07df06992",
+  secret: "af157e70ea9bf8cb6ccf",
+  cluster: "eu",
+  useTLS: true
+});
+
+// pusher.trigger("my-channel", "my-event", {
+//   message: "hello world"
+// });
+
+db.once("open", () => {
+    console.log("Db Connected")
+
+    const collection = db.collection("chatmessages")
+    const changeStream = collection.watch()
+
+    changeStream.on("change", (change) => {
+       console.log(change)
+
+       if(change.operationType === "insert") {
+           const message = change.fullDocument;
+
+           pusher.trigger("messages", "inserted", {
+               name : message.name,
+               message : message.message,
+               timestamp : message.timestamp,
+               recieved : message.recieved
+           })
+       } else {
+           console.log("Error triggerring pusher")
+       }
+    })
+})
+
+
+
+
+
+
+
 app.get("/", (req, res) => {
     res.status(200).send("Hello World")
+})
+
+app.get("/api/messages/sync", (req, res) => {
+    chatMessage.find({}, (err, data) => {
+        if(err) {
+            res.status(500).send(err)
+        } else {
+            res.status(200).send(data)
+        }
+    })
 })
 
 app.post("/api/message/new", (req, res) => {
@@ -31,14 +93,6 @@ app.post("/api/message/new", (req, res) => {
 
 
 //getting messages
-app.get("/api/messages/sync", (req, res) => {
-    chatMessage.find({}, (err, data) => {
-        if(err) {
-            res.status(500).send(err)
-        } else {
-            res.status(200).send(data)
-        }
-    })
-})
+
 
 app.listen(port, () => console.log(`Listening at port ${port}`))
