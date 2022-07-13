@@ -64,28 +64,6 @@ app.get("/", (req, res) => {
 
 app.use("/", messageRouter);
 
-app.get("/api/messages/sync", (req, res) => {
-  chatMessage.find({}, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
-  });
-});
-
-app.post("/api/message/new", (req, res) => {
-  const newMessage = req.body;
-
-  chatMessage.create(newMessage, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
-  });
-});
-
 //getting messages
 
 app.listen(port, () => console.log(`Listening at port ${port}`));
