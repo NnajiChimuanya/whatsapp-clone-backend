@@ -1,34 +1,33 @@
-import express from "express"
-const app = express()
-import mongoose from "mongoose"
-import chatMessage from "./model/chatMessageSchema.js"
-const port = process.env.PORT || 3001
-import Pusher from "pusher"
-import cors from "cors"
+import express from "express";
+const app = express();
+import mongoose from "mongoose";
+import chatMessage from "./model/chatMessageSchema.js";
+const port = process.env.PORT || 3001;
+import Pusher from "pusher";
+import cors from "cors";
+import messageRouter from "./routes/messageRouter.js";
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 // me
 
 try {
-    mongoose.connect("mongodb+srv://Muanya:Muanyachi@whatsappdatabase.ra74r.mongodb.net/?retryWrites=true&w=majority")
-    console.log("connected")
+  mongoose.connect(
+    "mongodb+srv://Muanya:Muanyachi@whatsappdatabase.ra74r.mongodb.net/?retryWrites=true&w=majority"
+  );
+  console.log("connected");
 } catch (error) {
-    if(error) throw error
+  if (error) throw error;
 }
 
-const db = mongoose.connection
-
-
-
-
+const db = mongoose.connection;
 
 const pusher = new Pusher({
   appId: "1412895",
   key: "e58aa4d80ab07df06992",
   secret: "af157e70ea9bf8cb6ccf",
   cluster: "eu",
-  useTLS: true
+  useTLS: true,
 });
 
 // pusher.trigger("my-channel", "my-event", {
@@ -36,63 +35,57 @@ const pusher = new Pusher({
 // });
 
 db.once("open", () => {
-    console.log("Db Connected")
+  console.log("Db Connected");
 
-    const collection = db.collection("chatmessages")
-    const changeStream = collection.watch()
+  const collection = db.collection("chatmessages");
+  const changeStream = collection.watch();
 
-    changeStream.on("change", (change) => {
-       console.log(change)
+  changeStream.on("change", (change) => {
+    console.log(change);
 
-       if(change.operationType === "insert") {
-           const message = change.fullDocument;
+    if (change.operationType === "insert") {
+      const message = change.fullDocument;
 
-           pusher.trigger("messages", "inserted", {
-               name : message.name,
-               message : message.message,
-               timestamp : message.timestamp,
-               recieved : message.recieved
-           })
-       } else {
-           console.log("Error triggerring pusher")
-       }
-    })
-})
-
-
-
-
-
-
+      pusher.trigger("messages", "inserted", {
+        name: message.name,
+        message: message.message,
+        timestamp: message.timestamp,
+        recieved: message.recieved,
+      });
+    } else {
+      console.log("Error triggerring pusher");
+    }
+  });
+});
 
 app.get("/", (req, res) => {
-    res.status(200).send("Hello World")
-})
+  res.status(200).send("Hello World");
+});
+
+app.use("/", messageRouter);
 
 app.get("/api/messages/sync", (req, res) => {
-    chatMessage.find({}, (err, data) => {
-        if(err) {
-            res.status(500).send(err)
-        } else {
-            res.status(200).send(data)
-        }
-    })
-})
+  chatMessage.find({}, (err, data) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(data);
+    }
+  });
+});
 
 app.post("/api/message/new", (req, res) => {
-    const newMessage = req.body
+  const newMessage = req.body;
 
-    chatMessage.create(newMessage, (err, data) => {
-        if(err) {
-            res.status(500).send(err)
-        } else{
-            res.status(200).send(data)
-        }
-    })
-})
-
+  chatMessage.create(newMessage, (err, data) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(data);
+    }
+  });
+});
 
 //getting messages
 
-
-app.listen(port, () => console.log(`Listening at port ${port}`))
+app.listen(port, () => console.log(`Listening at port ${port}`));
