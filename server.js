@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello World");
 });
 
-app.use("/", messageRouter);
+app.use("/api/message", messageRouter);
 
 //getting messages
 
