@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import chatMessage from "../model/chatMessageSchema.js";
 
 export const getMessages = (req, res) => {
