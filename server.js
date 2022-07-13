@@ -6,6 +6,7 @@ const port = process.env.PORT || 3001;
 import Pusher from "pusher";
 import cors from "cors";
 import messageRouter from "./routes/messageRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 app.use(express.json());
 app.use(cors());
@@ -63,6 +64,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/message", messageRouter);
+app.use("/api/user", userRouter);
 
 //getting messages
 

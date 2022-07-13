@@ -1,22 +1,24 @@
 import mongoose from "mongoose";
-import { required } from "nodemon/lib/config";
-
-const userSchema = new mongoose.Schema({
-    name : {
-        type: String;
-        required : true
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-    email : {
-        type: String,
-        required: [true, "Email is required"],
-        unique : true
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
     },
     password: {
-        type: String
+      type: String,
     },
-    {timestamps : true}
-})
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const user = mongoose.model("user", userSchema)
+const user = mongoose.model("user", userSchema);
 
-export default user
+export default user;
