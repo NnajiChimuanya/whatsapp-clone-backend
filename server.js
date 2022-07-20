@@ -7,9 +7,24 @@ import Pusher from "pusher";
 import cors from "cors";
 import messageRouter from "./routes/messageRouter.js";
 import userRouter from "./routes/userRouter.js";
+import passport from "passport";
+import session from "express-session";
 
 app.use(express.json());
 app.use(cors());
+app.use(
+  session({
+    secret: "muanya",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 // me
 
 try {
@@ -63,8 +78,18 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello World");
 });
 
+// app.get("/", (req, res) => res.send("LoggedIn"));
+
 app.use("/api/message", messageRouter);
-app.use("/api/user", userRouter);
+app.use("/", userRouter);
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  done(null, id);
+});
 
 //getting messages
 
