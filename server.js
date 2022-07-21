@@ -107,7 +107,7 @@ db.once("open", () => {
 });
 
 app.get("/", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(200).send("Hello World");
 });
 
