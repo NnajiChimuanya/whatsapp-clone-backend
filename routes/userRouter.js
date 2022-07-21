@@ -29,10 +29,7 @@ passport.use(
 
 userRouter.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] }),
-  (req, res) => {
-    res.json(data);
-  }
+  passport.authenticate("google", { scope: ["profile"] })
 );
 
 userRouter.get(
@@ -41,7 +38,6 @@ userRouter.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.json(data);
   }
 );
 
