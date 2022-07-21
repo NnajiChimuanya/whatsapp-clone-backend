@@ -31,16 +31,17 @@ userRouter.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] }),
   (req, res) => {
-    res.header("Access-Control-Allow-Origin", "https://w-clone.v");
+    res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
   }
 );
 
 userRouter.get(
   "/auth/google/callback",
-  cors(),
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
     res.json(data);
   }
 );
