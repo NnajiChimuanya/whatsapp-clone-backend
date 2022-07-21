@@ -12,13 +12,6 @@ import session from "express-session";
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: "*",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
 app.use(
   session({
     secret: "muanya",
@@ -107,7 +100,6 @@ db.once("open", () => {
 });
 
 app.get("/", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(200).send("Hello World");
 });
 
