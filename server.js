@@ -106,7 +106,7 @@ app.get("/", (req, res) => {
 // app.get("/", (req, res) => res.send("LoggedIn"));
 
 app.use("/api/message", messageRouter);
-app.use("/", cors(), userRouter);
+app.use("/", userRouter);
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
