@@ -29,7 +29,10 @@ passport.use(
 
 userRouter.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", { scope: ["profile"] }),
+  (req, res) => {
+    res.json(data);
+  }
 );
 
 userRouter.get(
