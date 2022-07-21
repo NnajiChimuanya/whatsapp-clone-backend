@@ -31,7 +31,7 @@ userRouter.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] }),
   (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
+    res.header("Access-Control-Allow-Origin", "https://w-clone.v");
   }
 );
 
@@ -40,7 +40,7 @@ userRouter.get(
   cors(),
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
+    res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
     res.json(data);
   }
 );

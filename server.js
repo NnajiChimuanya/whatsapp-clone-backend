@@ -11,12 +11,7 @@ import passport from "passport";
 import session from "express-session";
 
 app.use(express.json());
-
-app.use(
-  cors({
-    origin: "https://w-clone.vercel.app",
-  })
-);
+app.use(cors());
 
 app.use(
   session({
