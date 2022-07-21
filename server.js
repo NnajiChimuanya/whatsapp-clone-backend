@@ -11,7 +11,14 @@ import passport from "passport";
 import session from "express-session";
 
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(
   session({
     secret: "muanya",
@@ -25,6 +32,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
 // me
 
 try {
@@ -75,13 +83,14 @@ db.once("open", () => {
 });
 
 app.get("/", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   res.status(200).send("Hello World");
 });
 
 // app.get("/", (req, res) => res.send("LoggedIn"));
 
 app.use("/api/message", messageRouter);
-app.use("/", userRouter);
+app.use("/", cors(), userRouter);
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);

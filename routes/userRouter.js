@@ -2,6 +2,7 @@ import express from "express";
 
 import passport from "passport";
 import google from "passport-google-oauth20";
+import cors from "cors";
 
 const userRouter = express.Router();
 
@@ -32,8 +33,10 @@ userRouter.get(
 
 userRouter.get(
   "/auth/google/callback",
+  cors(),
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     res.json(data);
   }
 );
