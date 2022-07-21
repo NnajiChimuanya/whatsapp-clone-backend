@@ -29,7 +29,6 @@ passport.use(
 
 userRouter.get(
   "/auth/google",
-  cors(),
   passport.authenticate("google", { scope: ["profile"] })
 );
 
@@ -38,7 +37,8 @@ userRouter.get(
   cors(),
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
-    res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
+    res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app/");
+    res.json(data);
   }
 );
 
