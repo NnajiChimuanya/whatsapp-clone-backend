@@ -13,6 +13,12 @@ import session from "express-session";
 app.use(express.json());
 
 app.use(
+  cors({
+    origin: "https://w-clone.vercel.app",
+  })
+);
+
+app.use(
   session({
     secret: "muanya",
     resave: false,
@@ -25,8 +31,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.options("*", cors());
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
