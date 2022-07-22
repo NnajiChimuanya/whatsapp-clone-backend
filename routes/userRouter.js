@@ -29,15 +29,25 @@ passport.use(
 
 userRouter.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 userRouter.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    successRedirect: "/",
+  }),
   (req, res) => {
     res.json(data);
   }
 );
+
+userRouter.get("/login", (req, res) => {
+  res.status(401).json({
+    error: true,
+    message: "Login failure",
+  });
+});
 
 export default userRouter;
