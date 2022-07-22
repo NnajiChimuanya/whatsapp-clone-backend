@@ -13,7 +13,7 @@ import session from "express-session";
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://w-clone.vercel.app/",
+    origin: "https://w-clone.vercel.app",
     methods: "GET, POST, PUT, DELETE, OPTIONS",
     credentials: true,
   })
@@ -34,7 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app/");
+  res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
