@@ -27,6 +27,13 @@ passport.use(
   )
 );
 
+userRouter.get("/auth/success", (req, res) => {
+  res.status(200).json({
+    error: false,
+    user: req.user,
+  });
+});
+
 userRouter.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
