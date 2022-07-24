@@ -27,8 +27,7 @@ passport.use(
   )
 );
 
-userRouter.get("/auth/success", cors(), (req, res) => {
-  res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
+userRouter.get("/auth/success", (req, res) => {
   if (req.user) {
     res.status(200).json({
       error: false,

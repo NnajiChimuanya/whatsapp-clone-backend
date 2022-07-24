@@ -99,7 +99,7 @@ app.get("/", (req, res) => {
 // app.get("/", (req, res) => res.send("LoggedIn"));
 
 app.use("/api/message", messageRouter);
-app.use("/", userRouter);
+app.use("/", cors(), userRouter);
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
