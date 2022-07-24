@@ -32,6 +32,7 @@ userRouter.get("/auth/success", (req, res) => {
     res.status(200).json({
       error: false,
       user: req.user,
+      message: "yayyyyyyyyyy",
     });
   } else {
     res.status(403).json({
