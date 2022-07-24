@@ -27,7 +27,7 @@ passport.use(
   )
 );
 
-userRouter.get("/auth/success", (req, res) => {
+userRouter.get("/auth/success", cors(), (req, res) => {
   if (req.user) {
     res.status(200).json({
       error: false,
