@@ -42,10 +42,9 @@ userRouter.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login",
-    successRedirect: "https://w-clone.vercel.app/",
   }),
   (req, res) => {
-    res.json(data);
+    res.redirect("https://w-clone.vercel.app", { stats: "Logged in" });
   }
 );
 
