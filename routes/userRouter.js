@@ -28,7 +28,9 @@ passport.use(
 );
 
 userRouter.get("/auth/success", (req, res) => {
-  res.json(data);
+  res.json({
+    name: "Name",
+  });
 });
 
 userRouter.get(
