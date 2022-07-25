@@ -35,7 +35,7 @@ userRouter.get("/auth/success", (req, res) => {
       message: "yayyyyyyyyyy",
     });
   } else {
-    res.status(403).json({
+    res.status(401).json({
       error: true,
       message: "Unathorized user",
     });
