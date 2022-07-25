@@ -28,11 +28,18 @@ passport.use(
 );
 
 userRouter.get("/auth/success", (req, res) => {
-  res.status(200).json({
-    error: false,
-    user: req.user,
-    message: "yayyyyyyyyyy",
-  });
+  if (req.user) {
+    res.status(200).json({
+      error: false,
+      user: req.user,
+      message: "yayyyyyyyyyy",
+    });
+  } else {
+    res.status(403).json({
+      error: true,
+      message: "Unathorized user",
+    });
+  }
 });
 
 userRouter.get(
@@ -44,7 +51,7 @@ userRouter.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login",
-    successRedirect: "https://w-clone.vercel.app",
+    successRedirect: "https://w-clone.vercel.app/",
   }),
   (req, res) => {
     res.json(data);
