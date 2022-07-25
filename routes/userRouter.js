@@ -44,7 +44,7 @@ userRouter.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-    res.redirect("https://w-clone.vercel.app", { stats: "Logged in" });
+    res.json({ name: "Hei God" });
   }
 );
 
