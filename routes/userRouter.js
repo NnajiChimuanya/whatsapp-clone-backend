@@ -51,7 +51,7 @@ userRouter.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login",
-    successRedirect: "https://w-clone.vercel.app/",
+    successRedirect: "https://w-clone.vercel.app",
   }),
   (req, res) => {
     res.json(data);
