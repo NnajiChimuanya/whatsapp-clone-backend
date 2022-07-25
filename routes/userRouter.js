@@ -28,18 +28,11 @@ passport.use(
 );
 
 userRouter.get("/auth/success", (req, res) => {
-  if (req.user) {
-    res.status(200).json({
-      error: false,
-      user: req.user,
-      message: "yayyyyyyyyyy",
-    });
-  } else {
-    res.status(403).json({
-      error: true,
-      message: "Unathorized user",
-    });
-  }
+  res.status(200).json({
+    error: false,
+    user: req.user,
+    message: "yayyyyyyyyyy",
+  });
 });
 
 userRouter.get(
