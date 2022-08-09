@@ -33,18 +33,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "https://w-clone.vercel.app");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-//   next();
-// });
-
-// me
-
 try {
   mongoose.connect(
     "mongodb+srv://Muanya:Muanyachi@whatsappdatabase.ra74r.mongodb.net/?retryWrites=true&w=majority"
@@ -63,10 +51,6 @@ const pusher = new Pusher({
   cluster: "eu",
   useTLS: true,
 });
-
-// pusher.trigger("my-channel", "my-event", {
-//   message: "hello world"
-// });
 
 db.once("open", () => {
   console.log("Db Connected");
