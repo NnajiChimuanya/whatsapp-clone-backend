@@ -16,36 +16,26 @@ passport.use(
       clientID:
         "550356332090-10i4vlf4ekc8bi0smgpogb76mnl9768i.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL:
-        "https://wapp-clone-backend.herokuapp.com/auth/google/callback",
+      callbackURL: "https://localhost:3001/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
       console.log(profile);
       done(null, profile);
-      data = profile;
     }
   )
 );
 
-userRouter.get("/auth/success", (req, res) => {
-  res.json({
-    name: "Name",
-  });
-});
-
 userRouter.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile"] })
 );
 
 userRouter.get(
   "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    successRedirect: "https://w-clone.vercel.app/",
-  }),
-  (req, res) => {
-    res.json({ name: "Okayyyy" });
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/");
   }
 );
 

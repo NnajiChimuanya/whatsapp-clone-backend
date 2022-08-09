@@ -13,7 +13,7 @@ import session from "express-session";
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://w-clone.vercel.app",
+    origin: "*",
     methods: "GET, POST, PUT, DELETE, OPTIONS",
     credentials: true,
   })
