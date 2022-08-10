@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import google from "passport-google-oauth20";
 import cors from "cors";
-import user from "../model/userModel";
+import User from "../model/userModel.js";
 
 const userRouter = express.Router();
 
@@ -17,12 +17,29 @@ passport.use(
       clientSecret: "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",
       callbackURL: "http://localhost:3001/auth/google/callback",
     },
-    function (accessToken, refreshToken, profile, done) {
+    async (accessToken, refreshToken, profile, done) => {
       let name = profile.displayName;
-      let email = profile._json.picture;
+      let image = profile._json.picture;
 
-      //console.log(profile);
-      done(null, profile);
+      User.findOne({ name }, (err, data) => {
+        if (err) throw err;
+        if (data === null) {
+          try {
+            let newUser = new User({ name, image });
+            newUser.save((err, data) => {
+              console.log(data);
+            });
+
+            done(null, profile);
+          } catch (error) {
+            console.log(error);
+          }
+          done(null, profile);
+        } else {
+          console.log(data);
+          done(null, profile);
+        }
+      });
     }
   )
 );
