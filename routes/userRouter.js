@@ -9,6 +9,8 @@ const userRouter = express.Router();
 
 const GoogleStrategy = google.Strategy;
 
+let userData;
+
 passport.use(
   new GoogleStrategy(
     {
@@ -28,6 +30,7 @@ passport.use(
             let newUser = new User({ name, image });
             newUser.save((err, data) => {
               console.log(data);
+              userData = data;
             });
 
             done(null, profile);
@@ -37,6 +40,7 @@ passport.use(
           done(null, profile);
         } else {
           console.log(data);
+          userData = data;
           done(null, profile);
         }
       });
@@ -54,7 +58,9 @@ userRouter.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect("/");
+    res.cookie("user name", userData.name.toString());
+    res.cookie("user image", userData.image);
+    res.redirect("http://localhost:3000");
   }
 );
 

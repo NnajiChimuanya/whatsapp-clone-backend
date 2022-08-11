@@ -9,15 +9,17 @@ import messageRouter from "./routes/messageRouter.js";
 import userRouter from "./routes/userRouter.js";
 import passport from "passport";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: "GET, POST, PUT, DELETE, OPTIONS",
     credentials: true,
   })
 );
+app.use(cookieParser());
 
 app.use(
   session({
