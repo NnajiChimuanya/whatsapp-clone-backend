@@ -9,7 +9,7 @@ const userRouter = express.Router();
 
 const GoogleStrategy = google.Strategy;
 
-let userData;
+let data;
 
 passport.use(
   new GoogleStrategy(
@@ -19,31 +19,10 @@ passport.use(
       clientSecret: "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",
       callbackURL: "http://localhost:3001/auth/google/callback",
     },
-    async (accessToken, refreshToken, profile, done) => {
-      let name = profile.displayName;
-      let image = profile._json.picture;
-
-      User.findOne({ name }, (err, data) => {
-        if (err) throw err;
-        if (data === null) {
-          try {
-            let newUser = new User({ name, image });
-            newUser.save((err, data) => {
-              console.log(data);
-              userData = data;
-            });
-
-            done(null, profile);
-          } catch (error) {
-            console.log(error);
-          }
-          done(null, profile);
-        } else {
-          console.log(data);
-          userData = data;
-          done(null, profile);
-        }
-      });
+    function (accessToken, refreshToken, profile, cb) {
+      data = profile;
+      console.log(profile);
+      return cb(null, profile);
     }
   )
 );
@@ -58,9 +37,7 @@ userRouter.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.cookie("user name", userData.name.toString());
-    res.cookie("user image", userData.image);
-    res.redirect("http://localhost:3000");
+    res.json({ data });
   }
 );
 
